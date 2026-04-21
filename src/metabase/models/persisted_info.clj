@@ -10,7 +10,9 @@
    [metabase.util :as u]
    [metabase.util.malli :as mu]
    [methodical.core :as methodical]
-   [toucan2.core :as t2]))
+   [toucan2.core :as t2])
+  (:import
+   (java.text Normalizer Normalizer$Form)))
 
 ;;; ----------------------------------------------- Entity & Lifecycle -----------------------------------------------
 
@@ -70,9 +72,15 @@
 (defn- slug-name
   "A slug from a card suitable for a table name. This slug is not intended to be unique but to be human guide if looking
   at schemas. Persisted table names will follow the pattern `model_<card-id>_slug` and the model-id will ensure
-  uniqueness."
+  uniqueness. Non-ASCII characters are normalized to their ASCII equivalents where possible (e.g. accented characters
+  decomposed via NFD normalization) and any remaining non-ASCII characters are removed, so that the resulting slug
+  is safe to use as an identifier in databases that do not support non-ASCII object names (e.g. Trino/Starburst)."
   [nom]
-  (->> (str/replace (u/lower-case-en nom) #"\s+" "_")
+  (->> (-> (u/lower-case-en nom)
+           (Normalizer/normalize Normalizer$Form/NFD)
+           (str/replace #"[^\p{ASCII}]" "")
+           (str/replace #"\s+" "_")
+           (str/replace #"[^\w]" ""))
        (take 10)
        (apply str)))
 
