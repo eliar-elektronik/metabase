@@ -22,4 +22,5 @@
       ;; characters like Chinese/Japanese/Arabic that don't decompose to ASCII are dropped
       (is (= "model" (#'persisted-info/slug-name "model日本語"))))
     (testing "special characters that are not word characters are removed"
-      (is (= "hello_worl" (#'persisted-info/slug-name "hello world!"))))))
+      (is (= "hello_worl" (#'persisted-info/slug-name "hello world!")))
+      (is (= "hello" (#'persisted-info/slug-name "hello!")))))
