@@ -806,3 +806,10 @@
                   (if-not (pos-int? value)
                     20
                     value))))
+
+(defsetting app-grid-apps
+  (deferred-tru "JSON array of app entries to display in the app grid. Each entry should have `label`, `url`, and `img` fields. Set via the MB_APP_GRID_APPS environment variable.")
+  :visibility :public
+  :type       :json
+  :default    nil
+  :audit      :getter)

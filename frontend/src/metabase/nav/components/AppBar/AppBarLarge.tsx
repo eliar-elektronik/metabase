@@ -3,6 +3,7 @@ import type { CollectionId } from "metabase-types/api";
 
 import CollectionBreadcrumbs from "../../containers/CollectionBreadcrumbs";
 import QuestionLineage from "../../containers/QuestionLineage";
+import AppGrid from "../AppGrid";
 import NewItemButton from "../NewItemButton";
 import { ProfileLink } from "../ProfileLink";
 
@@ -67,17 +68,16 @@ const AppBarLarge = ({
           ) : null}
         </AppBarInfoContainer>
       </AppBarLeftContainer>
-      {(isSearchVisible || isNewButtonVisible || isProfileLinkVisible) && (
-        <AppBarRightContainer>
-          {isSearchVisible && <SearchBar />}
-          {isNewButtonVisible && <NewItemButton collectionId={collectionId} />}
-          {isProfileLinkVisible && (
-            <AppBarProfileLinkContainer>
-              <ProfileLink onLogout={onLogout} />
-            </AppBarProfileLinkContainer>
-          )}
-        </AppBarRightContainer>
-      )}
+      <AppBarRightContainer>
+        {isSearchVisible && <SearchBar />}
+        {isNewButtonVisible && <NewItemButton collectionId={collectionId} />}
+        <AppGrid />
+        {isProfileLinkVisible && (
+          <AppBarProfileLinkContainer>
+            <ProfileLink onLogout={onLogout} />
+          </AppBarProfileLinkContainer>
+        )}
+      </AppBarRightContainer>
     </AppBarRoot>
   );
 };

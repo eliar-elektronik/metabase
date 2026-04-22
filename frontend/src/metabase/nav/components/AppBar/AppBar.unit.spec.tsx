@@ -9,11 +9,13 @@ const NewItemButtonMock = () => <div data-testid="new-button" />;
 const SearchBarMock = () => <div data-testid="search-bar" />;
 const BreadcrumbsMock = () => <div data-testid="collection-path" />;
 const QuestionLineageMock = () => <div data-testid="question-lineage" />;
+const AppGridMock = () => null;
 
 jest.mock("../NewItemButton", () => NewItemButtonMock);
 jest.mock("../search/SearchBar/SearchBar", () => SearchBarMock);
 jest.mock("../../containers/CollectionBreadcrumbs", () => BreadcrumbsMock);
 jest.mock("../../containers/QuestionLineage", () => QuestionLineageMock);
+jest.mock("../AppGrid", () => AppGridMock);
 
 describe("AppBar", () => {
   let matchMediaSpy: jest.SpyInstance;
