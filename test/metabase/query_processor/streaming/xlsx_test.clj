@@ -556,7 +556,8 @@
                                     {::mb.viz/column-settings {{::mb.viz/field-id 0} {::mb.viz/number-style "duration"}}}
                                     rows
                                     parse-format-strings))))
-        (is (= [(/ seconds 86400.0)]
+        ;; When [hh]:mm:ss format is applied, POI reads the cell as a date (5.5 days from Excel epoch = Jan 5, 1900 12:00:00)
+        (is (= [#inst "1900-01-05T12:00:00.000-00:00"]
                (second (xlsx-export [{:id 0, :name "Col", :field_ref [:field 0]}]
                                     {::mb.viz/column-settings {{::mb.viz/field-id 0} {::mb.viz/number-style "duration"}}}
                                     rows))))))
@@ -571,7 +572,8 @@
                                     {::mb.viz/column-settings {{::mb.viz/column-name "Col"} {::mb.viz/number-style "duration"}}}
                                     rows
                                     parse-format-strings))))
-        (is (= [(/ seconds 86400.0)]
+        ;; When [hh]:mm:ss format is applied, POI reads the cell as a date (5.5 days from Excel epoch = Jan 5, 1900 12:00:00)
+        (is (= [#inst "1900-01-05T12:00:00.000-00:00"]
                (second (xlsx-export [{:name "Col", :field_ref [:aggregation 0]}]
                                     {::mb.viz/column-settings {{::mb.viz/column-name "Col"} {::mb.viz/number-style "duration"}}}
                                     rows))))))))
