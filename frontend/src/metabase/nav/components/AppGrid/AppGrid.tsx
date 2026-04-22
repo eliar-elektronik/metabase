@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { t } from "ttag";
 
 import { useSelector } from "metabase/lib/redux";
@@ -15,18 +15,11 @@ import {
   AppGridItemLabel,
 } from "./AppGrid.styled";
 
-function withHostname(url: string): string {
-  if (typeof window !== "undefined") {
-    return url.replace("$hostname", window.location.hostname);
-  }
-  return url;
-}
-
-interface AppGridProps {
+interface AppGridPopoverProps {
   apps: AppGridApp[];
 }
 
-const AppGridPopover = ({ apps }: AppGridProps): JSX.Element => {
+const AppGridPopover = ({ apps }: AppGridPopoverProps): JSX.Element => {
   const [opened, setOpened] = useState(false);
 
   return (
@@ -51,7 +44,7 @@ const AppGridPopover = ({ apps }: AppGridProps): JSX.Element => {
           {apps.map((app, index) => (
             <AppGridItemButton
               key={`${app.url}-${index}`}
-              href={withHostname(app.url)}
+              href={app.url}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setOpened(false)}
@@ -75,9 +68,58 @@ const AppGridPopover = ({ apps }: AppGridProps): JSX.Element => {
 };
 
 const AppGrid = (): JSX.Element | null => {
-  const apps = useSelector(state => getSetting(state, "app-grid-apps"));
+  const registryUrl = useSelector(state =>
+    getSetting(state, "app-registry-url"),
+  );
+  const appId = useSelector(state => getSetting(state, "app-id"));
+  const locale = useSelector(
+    state =>
+      getSetting(state, "user-locale") || getSetting(state, "site-locale"),
+  );
 
-  if (!apps || apps.length === 0) {
+  const [apps, setApps] = useState<AppGridApp[]>([]);
+
+  useEffect(() => {
+    if (!registryUrl) {
+      setApps([]);
+      return;
+    }
+
+    const params = new URLSearchParams();
+    if (appId) {
+      params.set("exclude", appId);
+    }
+    if (locale) {
+      params.set("locale", locale);
+    }
+
+    const url = `${registryUrl}?${params.toString()}`;
+
+    let cancelled = false;
+    fetch(url)
+      .then(res => {
+        if (!res.ok) {
+          throw new Error(`Registry responded with status ${res.status}`);
+        }
+        return res.json();
+      })
+      .then((data: AppGridApp[]) => {
+        if (!cancelled) {
+          setApps(Array.isArray(data) ? data : []);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setApps([]);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [registryUrl, appId, locale]);
+
+  if (apps.length === 0) {
     return null;
   }
 

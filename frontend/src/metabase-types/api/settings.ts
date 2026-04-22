@@ -199,7 +199,8 @@ export interface Settings {
   "active-users-count"?: number;
   "admin-email": string;
   "anon-tracking-enabled": boolean;
-  "app-grid-apps": AppGridApp[] | null;
+  "app-id": string | null;
+  "app-registry-url": string | null;
   "application-font": string;
   "application-font-files": FontFile[] | null;
   "application-name": string;
