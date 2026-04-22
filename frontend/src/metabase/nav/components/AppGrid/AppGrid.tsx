@@ -108,8 +108,9 @@ const AppGrid = (): JSX.Element | null => {
           setApps(Array.isArray(data) ? data : []);
         }
       })
-      .catch(() => {
+      .catch((err: unknown) => {
         if (!cancelled) {
+          console.error("[AppGrid] Failed to fetch app registry:", err);
           setApps([]);
         }
       });

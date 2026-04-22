@@ -68,16 +68,18 @@ const AppBarLarge = ({
           ) : null}
         </AppBarInfoContainer>
       </AppBarLeftContainer>
-      <AppBarRightContainer>
-        {isSearchVisible && <SearchBar />}
-        {isNewButtonVisible && <NewItemButton collectionId={collectionId} />}
-        <AppGrid />
-        {isProfileLinkVisible && (
-          <AppBarProfileLinkContainer>
-            <ProfileLink onLogout={onLogout} />
-          </AppBarProfileLinkContainer>
-        )}
-      </AppBarRightContainer>
+      {(isSearchVisible || isNewButtonVisible || isProfileLinkVisible) && (
+        <AppBarRightContainer>
+          {isSearchVisible && <SearchBar />}
+          {isNewButtonVisible && <NewItemButton collectionId={collectionId} />}
+          {isProfileLinkVisible && (
+            <AppBarProfileLinkContainer>
+              <ProfileLink onLogout={onLogout} />
+            </AppBarProfileLinkContainer>
+          )}
+        </AppBarRightContainer>
+      )}
+      <AppGrid />
     </AppBarRoot>
   );
 };
