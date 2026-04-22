@@ -3,6 +3,7 @@ import type { CollectionId } from "metabase-types/api";
 
 import CollectionBreadcrumbs from "../../containers/CollectionBreadcrumbs";
 import QuestionLineage from "../../containers/QuestionLineage";
+import AppGrid from "../AppGrid";
 import NewItemButton from "../NewItemButton";
 import { ProfileLink } from "../ProfileLink";
 
@@ -78,6 +79,7 @@ const AppBarLarge = ({
           )}
         </AppBarRightContainer>
       )}
+      <AppGrid />
     </AppBarRoot>
   );
 };

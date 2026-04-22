@@ -9,6 +9,13 @@ export const LayoutRoot = styled.div`
   background-color: ${color("bg-light")};
 `;
 
+export const AuthTopBar = styled.div`
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 1;
+`;
+
 export const LayoutBody = styled.div`
   display: flex;
   flex-direction: column;

@@ -4,6 +4,7 @@ import { SearchBar } from "metabase/nav/components/search/SearchBar";
 
 import CollectionBreadcrumbs from "../../containers/CollectionBreadcrumbs";
 import QuestionLineage from "../../containers/QuestionLineage";
+import AppGrid from "../AppGrid";
 import { ProfileLink } from "../ProfileLink";
 
 import { AppBarLogo } from "./AppBarLogo";
@@ -87,6 +88,7 @@ const AppBarSmall = ({
                 <ProfileLink onLogout={onLogout} />
               </AppBarProfileLinkContainer>
             )}
+            <AppGrid />
           </AppBarMainContainer>
           <AppBarLogoContainer isVisible={isLogoVisible && !isSearchActive}>
             <AppBarLogo

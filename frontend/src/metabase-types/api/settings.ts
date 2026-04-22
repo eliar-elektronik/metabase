@@ -189,10 +189,18 @@ export interface OpenAiModel {
 
 export type HelpLinkSetting = "metabase" | "hidden" | "custom";
 
+export interface AppGridApp {
+  label: string;
+  url: string;
+  img: string;
+}
+
 export interface Settings {
   "active-users-count"?: number;
   "admin-email": string;
   "anon-tracking-enabled": boolean;
+  "app-id": string | null;
+  "app-registry-url": string | null;
   "application-font": string;
   "application-font-files": FontFile[] | null;
   "application-name": string;

@@ -806,3 +806,17 @@
                   (if-not (pos-int? value)
                     20
                     value))))
+
+(defsetting app-registry-url
+  (deferred-tru "URL of the app registry endpoint. Metabase will call this URL to fetch the list of apps for the app grid. Set via the MB_APP_REGISTRY_URL environment variable.")
+  :visibility :public
+  :type       :string
+  :default    nil
+  :audit      :getter)
+
+(defsetting app-id
+  (deferred-tru "Identifier of this Metabase instance in the app registry. Used to exclude the current app from the grid. Set via the MB_APP_ID environment variable.")
+  :visibility :public
+  :type       :string
+  :default    nil
+  :audit      :getter)

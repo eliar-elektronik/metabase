@@ -2,10 +2,12 @@ import type { ReactNode } from "react";
 
 import LogoIcon from "metabase/components/LogoIcon";
 import { useSelector } from "metabase/lib/redux";
+import AppGrid from "metabase/nav/components/AppGrid";
 
 import { getHasIllustration } from "../../selectors";
 
 import {
+  AuthTopBar,
   LayoutBody,
   LayoutCard,
   LayoutIllustration,
@@ -22,6 +24,9 @@ export const AuthLayout = ({ children }: AuthLayoutProps): JSX.Element => {
   return (
     <LayoutRoot>
       {hasIllustration && <LayoutIllustration />}
+      <AuthTopBar>
+        <AppGrid />
+      </AuthTopBar>
       <LayoutBody>
         <LogoIcon height={65} />
         <LayoutCard>{children}</LayoutCard>
