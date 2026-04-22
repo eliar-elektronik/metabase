@@ -50,14 +50,20 @@ const AppGridPopover = ({ apps }: AppGridProps): JSX.Element => {
         <AppGridDropdown>
           {apps.map((app, index) => (
             <AppGridItemButton
-              key={index}
+              key={`${app.url}-${index}`}
               href={withHostname(app.url)}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setOpened(false)}
             >
               <AppGridContainer>
-                <AppGridItemImage src={app.img} alt={app.label} />
+                <AppGridItemImage
+                  src={app.img}
+                  alt={app.label}
+                  onError={e =>
+                    ((e.target as HTMLImageElement).style.visibility = "hidden")
+                  }
+                />
                 <AppGridItemLabel>{app.label}</AppGridItemLabel>
               </AppGridContainer>
             </AppGridItemButton>
