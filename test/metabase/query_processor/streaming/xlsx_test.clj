@@ -545,6 +545,37 @@
                                 {::mb.viz/column-settings {{::mb.viz/field-id 0} {::mb.viz/scale 2}}}
                                 [[1.0]]))))))
 
+(deftest duration-format-test
+  (mt/with-temporary-setting-values [custom-formatting {}]
+    (testing "Duration format is applied to columns looked up by field-id"
+      ;; 475200 seconds = 5.5 days = 5d 12:00:00
+      (let [seconds 475200
+            rows    [[seconds]]]
+        (is (= ["[hh]:mm:ss"]
+               (second (xlsx-export [{:id 0, :name "Col", :field_ref [:field 0]}]
+                                    {::mb.viz/column-settings {{::mb.viz/field-id 0} {::mb.viz/number-style "duration"}}}
+                                    rows
+                                    parse-format-strings))))
+        (is (= [(/ seconds 86400.0)]
+               (second (xlsx-export [{:id 0, :name "Col", :field_ref [:field 0]}]
+                                    {::mb.viz/column-settings {{::mb.viz/field-id 0} {::mb.viz/number-style "duration"}}}
+                                    rows))))))
+    (testing "Duration format is applied to aggregated columns looked up by column-name (e.g. after summarize)"
+      ;; Aggregated columns have a field_ref like [:aggregation 0] and no :id.
+      ;; Their viz settings are keyed by column name, not field ID.
+      ;; 475200 seconds = 5.5 days = 5d 12:00:00
+      (let [seconds 475200
+            rows    [[seconds]]]
+        (is (= ["[hh]:mm:ss"]
+               (second (xlsx-export [{:name "Col", :field_ref [:aggregation 0]}]
+                                    {::mb.viz/column-settings {{::mb.viz/column-name "Col"} {::mb.viz/number-style "duration"}}}
+                                    rows
+                                    parse-format-strings))))
+        (is (= [(/ seconds 86400.0)]
+               (second (xlsx-export [{:name "Col", :field_ref [:aggregation 0]}]
+                                    {::mb.viz/column-settings {{::mb.viz/column-name "Col"} {::mb.viz/number-style "duration"}}}
+                                    rows))))))))
+
 (deftest misc-data-test
   (testing "nil values"
     (is (= [nil]

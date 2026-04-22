@@ -189,7 +189,11 @@
                               ;; match a key with metadata, even if we do have the correct name or id
                               (update-keys #(select-keys % [::mb.viz/field-id ::mb.viz/column-name])))
         column-settings (or (all-cols-settings {::mb.viz/field-id field-id-or-name})
-                            (all-cols-settings {::mb.viz/column-name (or field-id-or-name column-name)}))]
+                            ;; Fall back to column-name lookup. Note: we cannot use `(or field-id-or-name
+                            ;; column-name)` here because for aggregated columns field-id-or-name is an integer
+                            ;; index (e.g. 0 for ["aggregation", 0]) which is truthy but not a valid field ID,
+                            ;; causing the lookup to silently fail.
+                            (all-cols-settings {::mb.viz/column-name column-name}))]
     (merge
       ;; The default global settings based on the type of the column
       (global-type-settings col viz-settings)
