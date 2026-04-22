@@ -276,7 +276,10 @@
                  ;; ignore options that aren't present in older versions of Java, like the one below:
                  "-XX:+IgnoreUnrecognizedVMOptions"
                  ;; include more details for debugging NPEs (Java 14+)
-                 "-XX:+ShowCodeDetailsInExceptionMessages"]}
+                 "-XX:+ShowCodeDetailsInExceptionMessages"
+                 ;; Development Database
+                 "-Dmb.db.connection.uri=postgres://mbuser:password@localhost:5432/metabase"
+                 ]}
 
   ;; includes test code as source paths. Run tests with clojure -X:dev:test
   :test
@@ -298,7 +301,8 @@
   :run
   {:main-opts ["-m" "metabase.bootstrap"]
    :jvm-opts  ["-Dmb.run.mode=dev"
-               "-Djava.awt.headless=true"]}                   ; prevent Java icon from randomly popping up in macOS dock
+               "-Djava.awt.headless=true"
+               "-Dmb.db.connection.uri=postgres://mbuser:password@localhost:5432/metabase"]}                   ; prevent Java icon from randomly popping up in macOS dock
 
   ;; alias for CI-specific options.
   :ci
@@ -461,7 +465,7 @@
 
   ;; clojure -T:whitespace-linter
   :whitespace-linter
-  {:deps       {com.github.camsaul/whitespace-linter {:sha "e35bc252ccf5cc74f7d543ef95ad8a3e5131f25b"}}
+  {:deps       {com.github.camsaul/whitespace-linter {:sha "d10134619f9a53127a17409a6037879452f01bc7"}}
    :ns-default whitespace-linter
    :exec-fn    whitespace-linter/lint
    :exec-args  {:paths            ["./.dir-locals.el"

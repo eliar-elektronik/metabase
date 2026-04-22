@@ -24,3 +24,4 @@
     (testing "special characters that are not word characters are removed"
       (is (= "hello_worl" (#'persisted-info/slug-name "hello world!")))
       (is (= "hello" (#'persisted-info/slug-name "hello!")))))
+)
